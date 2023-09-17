@@ -10,9 +10,9 @@ def  translate(text):
     with lock:
         path = os.getcwd()
         speach = gTTS(text)
-        speach.save(path+'\\audioProcessing\\temp.mp3')
-        playsound(path+'\\audioProcessing\\temp.mp3')
-        os.remove(path+'\\audioProcessing\\temp.mp3')
+        speach.save(path+'\\core\\audioProcessing\\temp.mp3')
+        playsound(path+'\\core\\audioProcessing\\temp.mp3')
+        os.remove(path+'\\core\\audioProcessing\\temp.mp3')
     
 #this function allows for multiple texts to be inputted while the TTS is currently running
 #it is probably wise to avoid using this and instead work with translate for more control
