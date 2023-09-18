@@ -8,4 +8,4 @@ def dropIn(name):
 if __name__ == '__main__':
     target = str(input("(System) enter name of target device: "))
     dropIn(target)
-    
+    audioProcessing.textToSpeech.terminal()

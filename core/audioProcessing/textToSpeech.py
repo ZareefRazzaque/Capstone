@@ -1,5 +1,6 @@
 import os
-import threading 
+import threading
+import pyaudio 
 from gtts import gTTS 
 from playsound import playsound
 
