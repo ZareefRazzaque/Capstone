@@ -1,9 +1,12 @@
-import pyaudio
+import pygame
+import pygame._sdl2.audio as sdl2_audio
 
-p = pyaudio.PyAudio()
+def get_devices(capture_devices: bool = False):
+    init_by_me = not pygame.mixer.get_init()
+    if init_by_me:
+        pygame.mixer.init()
+    devices = tuple(sdl2_audio.get_audio_device_names(capture_devices))
+    if init_by_me:
+        pygame.mixer.quit()
+    return devices
 
-print("Available Audio Output Devices (Speakers):")
-for i in range(p.get_device_count()):
-    device_info = p.get_device_info_by_index(i)
-    if device_info['maxOutputChannels'] > 0:
-        print(f"Device {i}: {device_info['name']}")
