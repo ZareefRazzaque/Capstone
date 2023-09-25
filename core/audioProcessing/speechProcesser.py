@@ -8,7 +8,7 @@ class speechProcessor():
             for index, name in enumerate(sr.Microphone.list_microphone_names()):
                 
                 print(microphonename, '----', name)
-                if name ==  microphonename:
+                if str(name) ==  microphonename:
                     self.microphone = index
                     print("found")
                     break
