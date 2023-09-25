@@ -15,22 +15,21 @@ class speechProcessor():
         else: print("none was set")
     
     #this takes a funciton as an input, takes mic audio and converts it into text and sends it through the inputted function
-    def speechrecognizer(self, fucntion):
+    def speechrecognizer(self, function):
         recognition = sr.Recognizer()
         
         while True:
-            try:
-                with sr.Microphone(4) as mic:
+            with sr.Microphone(4) as mic:
+                try:
                     print("ready")
                     audio = recognition.listen(mic)
-                
                     text =  recognition.recognize_google(audio)
-                    fucntion(text)
+                    function(text)
                     
-            except sr.UnknownValueError : 
-                print("something went wrong, restarting the mic")
-                recognition = sr.Recognizer()
-                continue
+                except sr.UnknownValueError : 
+                    print("something went wrong, restarting the mic")
+                    recognition = sr.Recognizer()
+                    recognition.adjust_for_ambient_noise(mic)
         
         
 if __name__ == '__main__':
