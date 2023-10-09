@@ -1,6 +1,6 @@
 import speech_recognition as sr
  
-class speechProcessor():
+class speechInput():
     
     def __init__(self, microphonename = None) -> None:
         
@@ -32,5 +32,5 @@ class speechProcessor():
         
 if __name__ == '__main__':
     for index, name in enumerate(sr.Microphone.list_microphone_names()): print(index, name)
-    SP = speechProcessor(input('(system) enter input device name: '))
+    SP = speechInput(input('(system) enter input device name: '))
     SP.speechrecognizer(print)

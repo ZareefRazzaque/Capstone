@@ -8,7 +8,7 @@ def dropIn(name):
     
     
 if __name__ == '__main__':
-    SP = audioProcessing.speechProcesser.speechProcessor('CABLE Output (VB-Audio Virtual Cable)')
+    SP = audioProcessing.speechInput.speechInput('CABLE Output (VB-Audio Virtual Cable)')
     target = str(input("(System) enter name of target device: "))
     dropIn(target)
     

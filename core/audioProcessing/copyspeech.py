@@ -1,5 +1,5 @@
 import textToSpeech
-import speechProcesser
+import core.audioProcessing.speechInput as speechInput
 import threading
 
 
@@ -12,7 +12,7 @@ def speechRepeatingFunction():
 
         thread.start()
     
-    speechProcesser.speechrecognizer(innerfunction)
+    speechInput.speechrecognizer(innerfunction)
 
 
 if __name__ == "__main__":

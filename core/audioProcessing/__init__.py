@@ -1,2 +1,2 @@
-from audioProcessing import speechProcesser
+from core.audioProcessing import speechInput
 from audioProcessing import textToSpeech

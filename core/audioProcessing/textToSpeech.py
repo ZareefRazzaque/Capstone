@@ -2,7 +2,7 @@ from pygame import mixer
 import os
 import threading
 from gtts import gTTS 
-
+from audioVariables import audiopath
 lock = threading.Lock()
 
 #this function deals with converting text into speech along with sending it off to alexa
@@ -11,17 +11,16 @@ def  translateAndSend(text):
     except: pass
     
     with lock:                                                          
-        path = os.getcwd()
         speach = gTTS(text)                                                 # we are using google's tts here (does the job for now) #TODO
-        speach.save(path+'\\core\\audioProcessing\\temp.mp3')               #saving file so it can be read
+        speach.save(audiopath+'\\temp.mp3')               #saving file so it can be read
         
-        mixer.music.load(path+'\\core\\audioProcessing\\temp.mp3')          #loading and playing audio here
+        mixer.music.load(audiopath +'\\temp.mp3')          #loading and playing audio here
         mixer.music.play()
     
         while mixer.music.get_busy(): pass                                  #closing the mixer so that the audio file may be deleted
         mixer.music.stop()
         mixer.quit()
-        os.remove(path + '\\core\\audioProcessing\\temp.mp3')               
+        os.remove(audiopath+'\\temp.mp3')               
         
 
 #converts text to tts audio file (for testing purposes)
@@ -31,9 +30,9 @@ def translate(text):
     path = os.getcwd()
     
     audio = gTTS(text)   
-    audio.save(path+'\\core\\audioProcessing\\audio.mp3')
+    audio.save(audiopath+'\\temp.mp3')
         
-    mixer.music.load(path+'\\core\\audioProcessing\\audio.mp3')
+    mixer.music.load(audiopath+'\\temp.mp3')
     mixer.music.play()
     
     while mixer.music.get_busy():pass
@@ -62,7 +61,7 @@ def terminal():
         if userInput == 'exit':
             exit()
         else:
-            translateAndSend(userInput)
+            translate(userInput)
         
 
 if __name__ == '__main__':
