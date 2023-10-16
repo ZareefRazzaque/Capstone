@@ -1,20 +1,22 @@
 import sys
+import time
 import audioProcessing
 import threading
 import os
 
 from audioProcessing import *
-from audioProcessing.AudioHandler import audioHandler
+from audioProcessing.AudioHandler import startAudioProcesses
 
-def dropIn(name, AH):
+def dropIn(name, A):
     AudioPrompt = "Alexa, drop in on " +name
-    AH.alexaSpeak(AudioPrompt)
+    A.alexaSpeak(AudioPrompt)
     
     
 if __name__ == '__main__':
-    AH = AudioHandler.audioHandler()
+    A = startAudioProcesses()
+    time.sleep(2)
     target = str(input("(System) enter name of target device: "))
-    dropIn(target)
+    dropIn(target, A)
     
     
     
