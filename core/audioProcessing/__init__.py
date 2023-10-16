@@ -1,2 +1,3 @@
-from core.audioProcessing import speechInput
-from audioProcessing import textToSpeech
+
+__all__ = ["AudioHandler", "speechInput", "textToSpeech", "audioVariables"]
+

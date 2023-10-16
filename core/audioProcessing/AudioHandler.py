@@ -1,20 +1,25 @@
+
 from multiprocessing import Queue
 import multiprocessing
-import threading
-import textToSpeech
-import speechInput
-import audioVariables
+import time
+
+try:
+    from audioProcessing import textToSpeech, speechInput, audioVariables
+except:
+    import textToSpeech
+    import speechInput
+    import audioVariables
 
 
 class audiohandler :
     def __init__(self) :
         self.TTSQueue =  Queue()
-        self.TTSProcess = multiprocessing.Process(target=self.speakFunction)
-        #self.TTSProcess.start()
+        
+        
         
         self.heardQueue = Queue()
-        self.heardProcess = multiprocessing.Process(target=self.alexaHeard)
-        self.heardProcess.start()
+        
+        
         
     def alexaSpeak(self, text):
         self.TTSQueue.put(text)
@@ -30,16 +35,44 @@ class audiohandler :
                 
                 
     def alexaHeard(self):
-        self.Input = speechInput.speechInput(audioVariables.SendToAlexa)
+        self.Input = speechInput.speechInput(audioVariables.recievedFromMic)
         self.Input.speechrecognizer(self.heardFunction)
     
     
     def heardFunction(self, text):
-        print(text)
+        with open('alexaHeard.txt','w') as file:
+            file.write(text)
+        
+def startAudioProcesses():
+    a = audiohandler()
+    TTSProcess = multiprocessing.Process(target=a.speakFunction)
+    heardProcess = multiprocessing.Process(target=a.alexaHeard)
+    TTSProcess.start()
+    heardProcess.start()
+    return a
         
         
+
+    
+def terminal():
+
+    a = startAudioProcesses()
+    time.sleep(2)
+    while True:
+        userInput = input("User: ")
+        
+        if userInput == 'exit':
+            exit()
+        else:
+            a.alexaSpeak(userInput)
+        
+
 if __name__ == '__main__':
-        a = audiohandler()
+    terminal()
+    
+        
+
+        
         
             
     

@@ -1,13 +1,19 @@
 from pygame import mixer
 import os
 import threading
-from gtts import gTTS 
-from audioVariables import audiopath
+from gtts import gTTS
+
+try:
+    from audioProcessing.audioVariables import audiopath, sendToSpeaker
+except ModuleNotFoundError:
+    from audioVariables import audiopath, sendToSpeaker
+
+
 lock = threading.Lock()
 
 #this function deals with converting text into speech along with sending it off to alexa
 def  translateAndSend(text):
-    try:mixer.init(devicename='CABLE Input (VB-Audio Virtual Cable)')       #virtual cable allows audio to be heard by alexa app
+    try:mixer.init(devicename = sendToSpeaker)       #virtual cable allows audio to be heard by alexa app
     except: pass
     
     with lock:                                                          
