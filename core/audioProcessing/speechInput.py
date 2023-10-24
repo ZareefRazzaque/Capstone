@@ -1,6 +1,10 @@
 import speech_recognition as sr
  
+
 class speechInput():
+    '''
+    this class deals with microphone input, the init selects an input from the list of available inputs 
+    '''
     
     def __init__(self, microphonename = None) -> None:
         
@@ -12,8 +16,13 @@ class speechInput():
                     break
         else: print("none was set")
     
-    #this takes a funciton as an input, takes mic audio and converts it into text and sends it through the inputted function
+    
     def speechrecognizer(self, function):
+        '''
+        this takes a funciton as an input, 
+        takes mic audio and converts it into text and sends it through the inputted function
+        '''
+        
         recognition = sr.Recognizer()
         
         while True:

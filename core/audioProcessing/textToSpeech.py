@@ -11,8 +11,9 @@ except ModuleNotFoundError:
 
 lock = threading.Lock()
 
-#this function deals with converting text into speech along with sending it off to alexa
 def  translateAndSend(text):
+    '''this function deals with converting text into speech along with sending it off to alexa'''
+
     try:mixer.init(devicename = sendToSpeaker)       #virtual cable allows audio to be heard by alexa app
     except: pass
     
@@ -29,8 +30,9 @@ def  translateAndSend(text):
         os.remove(audiopath+'\\temp.mp3')               
         
 
-#converts text to tts audio file (for testing purposes)
 def translate(text):
+    '''converts text to tts audio file (for testing purposes)'''
+    
     try:mixer.init()       
     except: pass
     path = os.getcwd()
@@ -48,9 +50,10 @@ def translate(text):
     
     
     
-#this function allows for multiple texts to be inputted while the TTS is currently running
-#it is probably wise to avoid using this and instead work with translate for more control
+
 def multithreadedTTS(text):
+    '''this function allows for multiple texts to be inputted while the TTS is currently running
+    it is probably wise to avoid using this and instead work with translate for more control'''
     print(text)
     thread = threading.Thread( target= translateAndSend, args=(text,) )  
 
@@ -58,9 +61,8 @@ def multithreadedTTS(text):
 
 
 
-#for testing purposes
 def terminal():
-
+    '''for testing purposes, creates a terminal for text to be translated into speach'''
     while True:
         userInput = input("User: ")
         

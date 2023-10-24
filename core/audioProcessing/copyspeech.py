@@ -3,8 +3,8 @@ import core.audioProcessing.speechInput as speechInput
 import threading
 
 
-
 def speechRepeatingFunction():
+    '''repeats whats heard through the microphone, mainly for testing purposes'''
 
     def innerfunction(text):
         print(text)
