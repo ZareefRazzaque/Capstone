@@ -1,5 +1,5 @@
 import textToSpeech
-import core.audioProcessing.speechInput as speechInput
+import Chatbot.audioProcessing.speechInput as speechInput
 import threading
 
 

@@ -1,12 +1,15 @@
 import sys
 import time
-import audioProcessing
+import Chatbot.audioProcessing
 import threading
 import os
+
+from django.http import HttpResponse
+
 from enum import Enum
 
-from audioProcessing import *
-from audioProcessing.AudioHandler import startAudioProcesses
+from Chatbot.audioProcessing import *
+from Chatbot.audioProcessing.AudioHandler import startAudioProcesses
 
 
 class state(Enum):
@@ -14,9 +17,10 @@ class state(Enum):
     active = 1
     passive = 2
     waitingForUser = 3
+    disabled = 0
     
     subscriberModules = []
-    currentState = active
+    currentState = disabled
     
     
     def changeCurrentState(newState):
@@ -43,6 +47,31 @@ def dropIn(name, A):
     AudioPrompt = "Alexa, drop in on " +name
     A.alexaSpeak(AudioPrompt)
     
+    
+    
+'''method for dealing with Internet communcations'''
+
+def personDetected(request):
+    '''this is for when a person is detected by the alexa'''
+    if state.waitingForUser == state.disabled: return HttpResponse('this is a failed test',status = 500)
+    if state.currentState == state.waitingForUser: 
+        state.changeCurrentState(state.passive) 
+        
+
+def start(request):
+    '''this initializes the server so that it is ready'''
+    if state.waitingForUser == state.disabled: return HttpResponse('this is a failed test',status = 409)
+    
+    with open('test.txt','w') as file:
+        file.write('i have recieved a request')
+    try:
+        A = startAudioProcesses()
+        time.sleep(2)
+        target = 'bedroom'
+        return HttpResponse('this is a test',status = 200)
+    except Exception: return HttpResponse('this is also a failed test',status = 500)
+    
+    
 
     
 if __name__ == '__main__':
@@ -51,7 +80,7 @@ if __name__ == '__main__':
     target = str(input("(System) enter name of target device: "))
     dropIn(target, A)
     
-    
+
     
     
     

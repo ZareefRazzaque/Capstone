@@ -4,7 +4,7 @@ import threading
 from gtts import gTTS
 
 try:
-    from audioProcessing.audioVariables import audiopath, sendToSpeaker
+    from Chatbot.audioProcessing.audioVariables import audiopath, sendToSpeaker
 except ModuleNotFoundError:
     from audioVariables import audiopath, sendToSpeaker
 
