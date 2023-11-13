@@ -63,19 +63,13 @@ def personDetected(request):
 def start(request):
     '''this initializes the server so that it is ready'''
     
-    with open('test.txt','w') as file:
-        file.write('i have recieved a request')
-        file.write(str(state.waitingForUser))
-        file.write(str(state.disabled))
-    
-    #if state.currentState != state.disabled: 
-    #   return HttpResponse('this is a failed test',status = 409)
-    path = os.getcwd()
-    subprocess.Popen(coreVariables.alexaExePath)
+    if state.currentState != state.disabled: 
+       return HttpResponse('this is a failed test',status = 409)
+
     try:
-        
+        subprocess.Popen(coreVariables.alexaExePath)
         A = startAudioProcesses()
-        time.sleep(15)
+        time.sleep(10)
         target = 'bedroom'
         dropIn(target, A)
         return HttpResponse('this is a test',status = 200)
