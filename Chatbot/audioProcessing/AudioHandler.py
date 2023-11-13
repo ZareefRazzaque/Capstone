@@ -4,11 +4,12 @@ import multiprocessing
 import time
 
 try:
-    from Chatbot.audioProcessing import textToSpeech, speechInput, audioVariables
+    from Chatbot.audioProcessing import textToSpeech
+    from Chatbot.audioProcessing import speechInput
+    from Chatbot.audioProcessing import audioVariables
 except:
-    import Chatbot.audioProcessing.textToSpeech
-    import Chatbot.audioProcessing.speechInput
-    import Chatbot.audioProcessing.audioVariables
+    import textToSpeech, speechInput, audioVariables
+    
 
 
 class audiohandler :

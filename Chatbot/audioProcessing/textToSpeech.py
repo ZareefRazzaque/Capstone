@@ -26,8 +26,7 @@ def  translateAndSend(text):
     
         while mixer.music.get_busy(): pass                                  #closing the mixer so that the audio file may be deleted
         mixer.music.stop()
-        mixer.quit()
-        os.remove(audiopath+'\\temp.mp3')               
+        mixer.quit()           
         
 
 def translate(text):
@@ -69,7 +68,7 @@ def terminal():
         if userInput == 'exit':
             exit()
         else:
-            translate(userInput)
+            translateAndSend(userInput)
         
 
 if __name__ == '__main__':

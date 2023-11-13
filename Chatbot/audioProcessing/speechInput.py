@@ -28,13 +28,11 @@ class speechInput():
         while True:
             with sr.Microphone(4) as mic:
                 try:
-                    print("ready")
                     audio = recognition.listen(mic)
                     text =  recognition.recognize_google(audio)
                     function(text)
                     
                 except sr.UnknownValueError : 
-                    print("something went wrong, restarting the mic")
                     recognition = sr.Recognizer()
                     recognition.adjust_for_ambient_noise(mic)
         

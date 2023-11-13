@@ -3,11 +3,13 @@ import time
 import Chatbot.audioProcessing
 import threading
 import os
+import subprocess
 
 from django.http import HttpResponse
 
 from enum import Enum
 
+from Chatbot import coreVariables
 from Chatbot.audioProcessing import *
 from Chatbot.audioProcessing.AudioHandler import startAudioProcesses
 
@@ -44,7 +46,7 @@ def dropIn(name, A):
     '''
     a simple function to trick the alexa app into dropping in on the target alexa
     '''
-    AudioPrompt = "Alexa, drop in on " +name
+    AudioPrompt = "Hey Alexa, drop in on " +name
     A.alexaSpeak(AudioPrompt)
     
     
@@ -60,16 +62,24 @@ def personDetected(request):
 
 def start(request):
     '''this initializes the server so that it is ready'''
-    if state.waitingForUser == state.disabled: return HttpResponse('this is a failed test',status = 409)
     
     with open('test.txt','w') as file:
         file.write('i have recieved a request')
+        file.write(str(state.waitingForUser))
+        file.write(str(state.disabled))
+    
+    #if state.currentState != state.disabled: 
+    #   return HttpResponse('this is a failed test',status = 409)
+    path = os.getcwd()
+    subprocess.Popen(coreVariables.alexaExePath)
     try:
+        
         A = startAudioProcesses()
-        time.sleep(2)
+        time.sleep(15)
         target = 'bedroom'
+        dropIn(target, A)
         return HttpResponse('this is a test',status = 200)
-    except Exception: return HttpResponse('this is also a failed test',status = 500)
+    except Exception: return HttpResponse(f'this is also a failed test ',status = 500)
     
     
 

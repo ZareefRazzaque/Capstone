@@ -1,0 +1,1 @@
+alexaExePath = "C:\Program Files\WindowsApps\\57540AMZNMobileLLC.AmazonAlexa_3.25.1177.0_x64__22t9g3sebte08\Alexa.exe"
