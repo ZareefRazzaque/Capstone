@@ -21,5 +21,6 @@ from Chatbot import core
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('start', core.start,),
-    path('personDetected', core.personDetected)
+    path('personDetected', core.personDetected),
+    path('DoDropin', core.personDetected)
 ]

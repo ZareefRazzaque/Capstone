@@ -14,8 +14,7 @@ lock = threading.Lock()
 def  translateAndSend(text):
     '''this function deals with converting text into speech along with sending it off to alexa'''
 
-    try:mixer.init(devicename = sendToSpeaker)       #virtual cable allows audio to be heard by alexa app
-    except: pass
+    mixer.init(devicename = sendToSpeaker)       #virtual cable allows audio to be heard by alexa app
     
     with lock:                                                          
         speach = gTTS(text)                                                 # we are using google's tts here (does the job for now) #TODO
@@ -32,8 +31,8 @@ def  translateAndSend(text):
 def translate(text):
     '''converts text to tts audio file (for testing purposes)'''
     
-    try:mixer.init()       
-    except: pass
+    mixer.init(devicename='CABLE-A Input (VB-Audio Cable A)')       
+    
     path = os.getcwd()
     
     audio = gTTS(text)   
@@ -68,7 +67,7 @@ def terminal():
         if userInput == 'exit':
             exit()
         else:
-            translateAndSend(userInput)
+            translate(userInput)
         
 
 if __name__ == '__main__':

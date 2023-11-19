@@ -1,5 +1,6 @@
 import speech_recognition as sr
- 
+try: import audioVariables
+except: pass
 
 class speechInput():
     '''
@@ -8,13 +9,15 @@ class speechInput():
     
     def __init__(self, microphonename = None) -> None:
         
-        if microphonename != None :
+        if microphonename != '' :
             for index, name in enumerate(sr.Microphone.list_microphone_names()):
                 if str(name) ==  microphonename:
                     self.microphone = index
                     print("found")
                     break
-        else: print("none was set")
+        else:
+            self.microphone =  None 
+            print("none was set")
     
     
     def speechrecognizer(self, function):
@@ -26,18 +29,18 @@ class speechInput():
         recognition = sr.Recognizer()
         
         while True:
-            with sr.Microphone(4) as mic:
+            with sr.Microphone(device_index=3) as mic:
                 try:
                     audio = recognition.listen(mic)
                     text =  recognition.recognize_google(audio)
                     function(text)
                     
                 except sr.UnknownValueError : 
+                    print('unkown error')
                     recognition = sr.Recognizer()
-                    recognition.adjust_for_ambient_noise(mic)
         
         
 if __name__ == '__main__':
     for index, name in enumerate(sr.Microphone.list_microphone_names()): print(index, name)
-    SP = speechInput(input('(system) enter input device name: '))
+    SP = speechInput(audioVariables.recievedFromMic)
     SP.speechrecognizer(print)
