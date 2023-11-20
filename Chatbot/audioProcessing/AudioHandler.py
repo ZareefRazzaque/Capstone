@@ -66,24 +66,12 @@ class audioHandler :
         '''calls the check background class to check if audio is connected'''
         return  self.CB.isConnected()
     
-    
-        
-def startAudioProcesses():
-    '''starts the parallel processes for audio'''
-    
-    AH = audioHandler()
-    TTSProcess = multiprocessing.Process(target=AH.speakFunction)
-    heardProcess = multiprocessing.Process(target=AH.alexaHearing)
-    TTSProcess.start()
-    heardProcess.start()
-    return AH
         
         
 
 def terminal():
     '''terminal for testing purposes'''
 
-    a = startAudioProcesses()
     time.sleep(2)
     while True:
         userInput = input("User: ")

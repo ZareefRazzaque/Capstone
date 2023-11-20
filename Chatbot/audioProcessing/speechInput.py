@@ -28,11 +28,12 @@ class speechInput():
         
         recognition = sr.Recognizer()
         
+        
         while True:
             with sr.Microphone(device_index=self.microphone) as mic:
                 try:
-                    recognition.adjust_for_ambient_noise(mic)
-                    audio = recognition.listen(mic, 10)
+                    recognition.adjust_for_ambient_noise(mic,1)
+                    audio = recognition.listen(mic, phrase_time_limit=30 )
                     text =  recognition.recognize_google(audio)
                     function(text)
                     

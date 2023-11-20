@@ -5,12 +5,12 @@ import threading
 import os
 import subprocess
 import psutil
-
+import multiprocessing
 from django.http import HttpResponse
 
 
 from Chatbot.audioProcessing import *
-from Chatbot.audioProcessing.audioHandler import startAudioProcesses
+from Chatbot.audioProcessing import audioHandler
 from Chatbot.Intelligence.brain import brain 
 
 from Chatbot.stateInterface import state
@@ -19,7 +19,9 @@ class coreVariables():
     '''important variables needed for this file'''
     alexaExePath = "C:\Program Files\WindowsApps\\57540AMZNMobileLLC.AmazonAlexa_3.25.1177.0_x64__22t9g3sebte08\Alexa.exe"
     B = brain()
-    AH = startAudioProcesses()
+    AH = audioHandler.audioHandler()
+    TTSProcess = multiprocessing.Process(target=AH.speakFunction)
+    heardProcess = multiprocessing.Process(target=AH.alexaHearing)
     alexaApp = None
     target = 'bedroom'      #name of my alexa device
     
@@ -31,7 +33,11 @@ def dropIn():
     for i in range(0,4):
         if coreVariables.AH.checkConnected():
             print('connected')
+            
+            
+            coreVariables.heardProcess.start()
             return
+        
         print('not connected')
         AudioPrompt = "Hey Alexa, drop in on " + coreVariables.target
         coreVariables.AH.alexaSpeak(AudioPrompt)
@@ -90,6 +96,8 @@ def start(request):
 #try:
     coreVariables.alexaApp = subprocess.Popen(coreVariables.alexaExePath)
     coreVariables.B.start()
+    coreVariables.TTSProcess.start()
+    
     target = 'bedroom'
     time.sleep(10)
     dropIn()
