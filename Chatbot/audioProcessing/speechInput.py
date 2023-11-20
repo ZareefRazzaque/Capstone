@@ -29,18 +29,22 @@ class speechInput():
         recognition = sr.Recognizer()
         
         while True:
-            with sr.Microphone(device_index=3) as mic:
+            with sr.Microphone(device_index=self.microphone) as mic:
                 try:
-                    audio = recognition.listen(mic)
+                    recognition.adjust_for_ambient_noise(mic)
+                    audio = recognition.listen(mic, 10)
                     text =  recognition.recognize_google(audio)
                     function(text)
                     
                 except sr.UnknownValueError : 
                     print('unkown error')
                     recognition = sr.Recognizer()
+                    continue
+                except sr.WaitTimeoutError :
+                    continue
         
         
 if __name__ == '__main__':
     for index, name in enumerate(sr.Microphone.list_microphone_names()): print(index, name)
-    SP = speechInput(audioVariables.recievedFromMic)
+    SP = speechInput('CABLE-A Output (VB-Audio Cable ')
     SP.speechrecognizer(print)

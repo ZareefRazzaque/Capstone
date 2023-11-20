@@ -4,12 +4,13 @@ import Chatbot.audioProcessing
 import threading
 import os
 import subprocess
+import psutil
 
 from django.http import HttpResponse
 
 
 from Chatbot.audioProcessing import *
-from Chatbot.audioProcessing.AudioHandler import startAudioProcesses
+from Chatbot.audioProcessing.audioHandler import startAudioProcesses
 from Chatbot.Intelligence.brain import brain 
 
 from Chatbot.stateInterface import state
@@ -18,20 +19,49 @@ class coreVariables():
     '''important variables needed for this file'''
     alexaExePath = "C:\Program Files\WindowsApps\\57540AMZNMobileLLC.AmazonAlexa_3.25.1177.0_x64__22t9g3sebte08\Alexa.exe"
     B = brain()
-    A = startAudioProcesses()
+    AH = startAudioProcesses()
+    alexaApp = None
     target = 'bedroom'      #name of my alexa device
     
     
 def dropIn():
     '''
-    a simple function to trick the alexa app into dropping in on the target alexa
+    a function to trick the alexa app into dropping in on the target alexa
     '''
-    AudioPrompt = "Hey Alexa, drop in on " + coreVariables.target
-    coreVariables.A.alexaSpeak(AudioPrompt)
+    for i in range(0,4):
+        if coreVariables.AH.checkConnected():
+            print('connected')
+            return
+        print('not connected')
+        AudioPrompt = "Hey Alexa, drop in on " + coreVariables.target
+        coreVariables.AH.alexaSpeak(AudioPrompt)
+        time.sleep(10)
+    
+    print('restarting alexaapp')
+    
+    restartApp()
+    time.sleep(10)
+    dropIn()
     
     
     
-'''method for dealing with Internet communcations'''
+    
+def restartApp():
+    '''restarts the alexa app when there is a problem'''    
+    for process in psutil.process_iter(['pid','name']):
+        if process.info['name'] == 'Alexa.exe':
+            try:
+                alexaApp = psutil.Process(process.info['pid'])
+                alexaApp.terminate()
+            except Exception:
+                print('could not kill the alexa app')
+                
+            time.sleep(3)
+            coreVariables.alexaApp = subprocess.Popen(coreVariables.alexaExePath)
+                
+                
+    
+#methods for dealing with Internet communcations
 def DoDropin():
     '''goes straight in to communication with the user'''
     if state.waitingForUser == state.disabled: return HttpResponse('this is a failed test',status = 500)
@@ -39,11 +69,16 @@ def DoDropin():
 
     dropIn()
 
+
+
+
 def personDetected(request):
     '''this is for when a person is detected by the alexa'''
     if state.waitingForUser == state.disabled: return HttpResponse('this is a failed test',status = 500)
     if state.currentState == state.waitingForUser: 
         state.changeCurrentState(state.passive) 
+        
+        
         
 
 def start(request):
@@ -52,18 +87,17 @@ def start(request):
     if state.currentState != state.disabled: 
        return HttpResponse('server is already running',status = 409)
 
-    try:
-        subprocess.Popen(coreVariables.alexaExePath)
-        
-        coreVariables.B.start()
-        target = 'bedroom'
-        time.sleep(10)
-        dropIn()
-    
-        return HttpResponse('server is now active',status = 200)
-    except Exception as e: 
-        print(e)
-        return HttpResponse(f'server has failed ',status = 500)
+#try:
+    coreVariables.alexaApp = subprocess.Popen(coreVariables.alexaExePath)
+    coreVariables.B.start()
+    target = 'bedroom'
+    time.sleep(10)
+    dropIn()
+
+    return HttpResponse('server is now active',status = 200)
+#except Exception as e: 
+#    print(e)
+#    return HttpResponse(f'server has failed ',status = 500)
     
     
 

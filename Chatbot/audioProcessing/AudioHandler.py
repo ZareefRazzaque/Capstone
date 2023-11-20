@@ -7,12 +7,13 @@ try:
     from Chatbot.audioProcessing import textToSpeech
     from Chatbot.audioProcessing import speechInput
     from Chatbot.audioProcessing import audioVariables
-except:
-    import textToSpeech, speechInput, audioVariables
+    from Chatbot.audioProcessing import checkBackground
+except Exception as  e:
+    import textToSpeech, speechInput, audioVariables, checkBackground
     
 
 
-class audiohandler :
+class audioHandler :
     '''
     this will be the wrapper interface that should be used for python modules to interact with the audio functions
     this also deals with parallel processes for the audio functions
@@ -21,6 +22,7 @@ class audiohandler :
     def __init__(self) :
         self.TTSQueue =  Queue()
         self.heardQueue = Queue() #unused for now
+        self.CB = checkBackground.checkBackground()
         
         
     def alexaSpeak(self, text):
@@ -37,26 +39,44 @@ class audiohandler :
                 except AssertionError: pass
                 
                 
-    def alexaHeard(self):
+    def alexaHearing(self):
         ''' another private function moving audio heard from the microphone to the heard function'''
         
-        self.Input = speechInput.speechInput(audioVariables.recievedFromMic)
-        self.Input.speechrecognizer(self.alexaheard)
+        SP = speechInput.speechInput('CABLE-A Output (VB-Audio Cable ')
+        SP.speechrecognizer(self.alexaHeard)
     
-    #TODO
-    def alexaheard(self, text):
-        with open('alexaHeard.txt','w') as file:
-            file.write(text)
+    
+    
+    def alexaHeard(self, text):
+        '''this function deals with when alexa hears something '''
+        with open('alexaHeard.txt','a') as file:
+            file.write(f'\n {text}')
+            file.close()
+        
+    
+    
+    def checkTalkingSuitability(self):
+        '''returns whether the environment is suitable for chatting in'''
+        return self.CB.isSuitableToChat()
+    
+    
+    
+    def checkConnected(self):
+        '''checks whether the alexa has connected to the program'''
+        '''calls the check background class to check if audio is connected'''
+        return  self.CB.isConnected()
+    
+    
         
 def startAudioProcesses():
     '''starts the parallel processes for audio'''
     
-    a = audiohandler()
-    TTSProcess = multiprocessing.Process(target=a.speakFunction)
-    heardProcess = multiprocessing.Process(target=a.alexaHeard)
+    AH = audioHandler()
+    TTSProcess = multiprocessing.Process(target=AH.speakFunction)
+    heardProcess = multiprocessing.Process(target=AH.alexaHearing)
     TTSProcess.start()
     heardProcess.start()
-    return a
+    return AH
         
         
 
