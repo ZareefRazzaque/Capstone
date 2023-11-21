@@ -1,4 +1,6 @@
 import speech_recognition as sr
+import whisper
+
 try: import audioVariables
 except: pass
 
@@ -25,6 +27,7 @@ class speechInput():
         this takes a funciton as an input, 
         takes mic audio and converts it into text and sends it through the inputted function
         '''
+    
         
         recognition = sr.Recognizer()
         

@@ -5,11 +5,11 @@ import time
 
 try:
     from Chatbot.audioProcessing import textToSpeech
-    from Chatbot.audioProcessing import speechInput
+    from Chatbot.audioProcessing import speechInput2 
     from Chatbot.audioProcessing import audioVariables
     from Chatbot.audioProcessing import checkBackground
 except Exception as  e:
-    import textToSpeech, speechInput, audioVariables, checkBackground
+    import textToSpeech, speechInput2, audioVariables, checkBackground
     
 
 
@@ -42,7 +42,7 @@ class audioHandler :
     def alexaHearing(self):
         ''' another private function moving audio heard from the microphone to the heard function'''
         
-        SP = speechInput.speechInput('CABLE-A Output (VB-Audio Cable ')
+        SP = speechInput2.speechInput()
         SP.speechrecognizer(self.alexaHeard)
     
     

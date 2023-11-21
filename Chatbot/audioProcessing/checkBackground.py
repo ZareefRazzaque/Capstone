@@ -100,7 +100,6 @@ class checkBackground:
                              frames_per_buffer=1024,
                              input=True,
                              input_device_index= self.deviceNumber
-                             
                              )
         
         audioFrames = []
