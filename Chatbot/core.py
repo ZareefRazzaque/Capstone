@@ -19,9 +19,7 @@ class coreVariables():
     '''important variables needed for this file'''
     alexaExePath = "C:\Program Files\WindowsApps\\57540AMZNMobileLLC.AmazonAlexa_3.25.1177.0_x64__22t9g3sebte08\Alexa.exe"
     B = brain()
-    AH = audioHandler.audioHandler()
-    TTSProcess = multiprocessing.Process(target=AH.speakFunction)
-    heardProcess = multiprocessing.Process(target=AH.alexaHearing)
+    AH = None
     alexaApp = None
     target = 'bedroom'      #name of my alexa device
     
@@ -34,8 +32,6 @@ def dropIn():
         if coreVariables.AH.checkConnected():
             print('connected')
             
-            
-            coreVariables.heardProcess.start()
             return
         
         print('not connected')
@@ -96,11 +92,10 @@ def start(request):
 #try:
     coreVariables.alexaApp = subprocess.Popen(coreVariables.alexaExePath)
     coreVariables.B.start()
-    coreVariables.TTSProcess.start()
+    coreVariables.AH =  audioHandler.startAudioProcesses()
     
     target = 'bedroom'
     time.sleep(10)
-    dropIn()
 
     return HttpResponse('server is now active',status = 200)
 #except Exception as e: 

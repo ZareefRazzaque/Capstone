@@ -30,6 +30,6 @@ class brain(stateInterface):
         while True:
             pass
         
-    def think(self):
+    def thinkPrompt(self):
         '''this function will allow the system to generate questions'''
         

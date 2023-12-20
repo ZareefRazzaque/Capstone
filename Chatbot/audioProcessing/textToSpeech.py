@@ -30,20 +30,20 @@ def  translateAndSend(text):
 
 def translate(text):
     '''converts text to tts audio file (for testing purposes)'''
-    
-    mixer.init(devicename='CABLE-A Input (VB-Audio Cable A)')       
-    
-    path = os.getcwd()
-    
-    audio = gTTS(text)   
-    audio.save(audiopath+'\\temp.mp3')
+    with lock:  
+        mixer.init(devicename='CABLE-A Input (VB-Audio Cable A)')       
         
-    mixer.music.load(audiopath+'\\temp.mp3')
-    mixer.music.play()
-    
-    while mixer.music.get_busy():pass
-    mixer.music.stop()
-    mixer.quit()
+        path = os.getcwd()
+        
+        audio = gTTS(text)   
+        audio.save(audiopath+'\\temp.mp3')
+            
+        mixer.music.load(audiopath+'\\temp.mp3')
+        mixer.music.play()
+        
+        while mixer.music.get_busy():pass
+        mixer.music.stop()
+        mixer.quit()
     
     
     
@@ -53,7 +53,7 @@ def multithreadedTTS(text):
     '''this function allows for multiple texts to be inputted while the TTS is currently running
     it is probably wise to avoid using this and instead work with translate for more control'''
     print(text)
-    thread = threading.Thread( target= translateAndSend, args=(text,) )  
+    thread = threading.Thread( target= translate, args=(text,) )  
 
     thread.start()
 

@@ -84,8 +84,6 @@ class checkBackground:
         except Exception:
             print('nothing was detected')
         
-        data = pd.Series(BackgroundAudio).plot()
-        plt.show()
         print(suitable)
         
         
